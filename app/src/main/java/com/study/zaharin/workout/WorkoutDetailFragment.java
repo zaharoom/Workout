@@ -19,14 +19,14 @@ public class WorkoutDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             workoutId = savedInstanceState.getLong(WORKOUT_ID);
+        } else {
+            StopwatchFragment stopwatchFragment = new StopwatchFragment();
+            FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.stopwatch_container, stopwatchFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.commit();
         }
-
-        StopwatchFragment stopwatchFragment = new StopwatchFragment();
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.stopwatch_container, stopwatchFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
 
         return inflater.inflate(R.layout.fragment_workout_detail, container, false);
     }
@@ -38,7 +38,7 @@ public class WorkoutDetailFragment extends Fragment {
         if (v != null) {
             TextView title = (TextView) v.findViewById(R.id.textTitle);
             TextView description = (TextView) v.findViewById(R.id.textDescription);
-            Workout workout = Workout.workouts[(int)workoutId];
+            Workout workout = Workout.workouts[(int) workoutId];
             title.setText(workout.getName());
             description.setText(workout.getDescription());
         }

@@ -8,11 +8,12 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Locale;
 
-public class StopwatchFragment extends Fragment {
+public class StopwatchFragment extends Fragment implements View.OnClickListener {
 
     public static final String EXTRA_SECONDS = "seconds";
     public static final String EXTRA_RUNNING = "running";
@@ -25,6 +26,15 @@ public class StopwatchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stopwatch, container, false);
+
+        Button startButton = (Button) v.findViewById(R.id.start_button);
+        Button stopButton = (Button) v.findViewById(R.id.stop_button);
+        Button resetButton = (Button) v.findViewById(R.id.reset_button);
+
+        startButton.setOnClickListener(this);
+        stopButton.setOnClickListener(this);
+        resetButton.setOnClickListener(this);
+
         runTimer(v);
         return v;
     }
@@ -45,10 +55,10 @@ public class StopwatchFragment extends Fragment {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                int hours = seconds/3600;
-                int minutes = (seconds%3600)/60;
-                int sec = seconds%60;
-                String time = String.format(Locale.US,"%d:%02d:%02d", hours, minutes, sec);
+                int hours = seconds / 3600;
+                int minutes = (seconds % 3600) / 60;
+                int sec = seconds % 60;
+                String time = String.format(Locale.US, "%d:%02d:%02d", hours, minutes, sec);
                 assert textView != null;
                 textView.setText(time);
 
@@ -59,17 +69,22 @@ public class StopwatchFragment extends Fragment {
         });
     }
 
-    public void onClickStart(View view) {
-        running = true;
-    }
 
-    public void onClickStop(View view) {
-        running = false;
-    }
-
-    public void onClickReset(View view) {
-        running = false;
-        seconds = 0;
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.start_button:
+                running = true;
+                break;
+            case R.id.stop_button:
+                running = false;
+                break;
+            case R.id.reset_button:
+                running = false;
+                seconds = 0;
+                break;
+        }
     }
 
     @Override
