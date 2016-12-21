@@ -1,6 +1,7 @@
 package com.study.zaharin.workout;
 
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,14 @@ public class WorkoutDetailFragment extends Fragment {
         if (savedInstanceState != null) {
             workoutId = savedInstanceState.getLong(WORKOUT_ID);
         }
+
+        StopwatchFragment stopwatchFragment = new StopwatchFragment();
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.stopwatch_container, stopwatchFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+
         return inflater.inflate(R.layout.fragment_workout_detail, container, false);
     }
 
